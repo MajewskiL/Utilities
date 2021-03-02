@@ -1,5 +1,5 @@
 import sqlite3
-from hstest import *
+from hstest import *  # instrukcja jak dodać bibliotekę
 import os
 
 
