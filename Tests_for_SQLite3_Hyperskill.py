@@ -35,8 +35,8 @@ class SQLite3Test:
         try:
             self.conn = sqlite3.connect(self.file_name)
             self.cursor = self.conn.cursor()
-        except sqlite3.OperationalError:
-            raise WrongAnswer(f"DataBase {self.file_name} may be locked.")
+        except sqlite3.OperationalError as err:
+            raise WrongAnswer(f"DataBase {self.file_name} may be locked. An error was returned when trying to connect: {err}.")
 
     def close(self):
         try:
@@ -49,9 +49,12 @@ class SQLite3Test:
             lines = self.cursor.execute(f"{query}")
         except AttributeError:
             raise WrongAnswer(self.cursor_message)
-        except sqlite3.OperationalError:
+        except sqlite3.OperationalError as err:
             self.close()
-            raise WrongAnswer(self.no_table_message)
+            raise WrongAnswer(f"Error '{err}' occurred while trying to read from database '{self.file_name}'.")
+        except sqlite3.DatabaseError as err:
+            self.close()
+            raise WrongAnswer(f"Error '{err}' occurred while trying to read from database '{self.file_name}'.")
         return lines
 
     def is_table_exist(self, name):  # table name -> string

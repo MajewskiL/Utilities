@@ -34,8 +34,8 @@ class SQLite3Test:
         try:
             self.conn = sqlite3.connect(self.file_name)
             self.cursor = self.conn.cursor()
-        except sqlite3.OperationalError:
-            return f"DataBase {self.file_name} may be locked."
+        except sqlite3.OperationalError as err:
+            return f"DataBase {self.file_name} may be locked. An error was returned when trying to connect: {err}."
 
     def close(self):
         try:
@@ -47,10 +47,13 @@ class SQLite3Test:
         try:
             lines = self.cursor.execute(f"{query}")
         except AttributeError:
-            return(self.cursor_message)
-        except sqlite3.OperationalError:
+            return self.cursor_message
+        except sqlite3.OperationalError as err:
             self.close()
-            return(self.no_table_message)
+            return f"Error '{err}' occurred while trying to read from database '{self.file_name}'."
+        except sqlite3.DatabaseError as err:
+            self.close()
+            return f"Error '{err}' occurred while trying to read from database '{self.file_name}'."
         return lines
 
     def is_table_exist(self, name):  # table name -> string
@@ -100,3 +103,7 @@ class SQLite3Test:
         if not any([column in line for line in lines]):
             return f"There is no FOREIGN KEY parameter in {name} on column {column}."
         return True
+
+a = SQLite3Test("data..db")
+print(a.connect())
+print(a.run_query("SELECT * FROM ham"))
