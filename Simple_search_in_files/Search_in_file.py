@@ -1,7 +1,7 @@
 import os
 
 # manual configuration
-WORK_DIRECTORY = "C:\\Users\\ZZ0AV4820\\Documents\\Noty"
+WORK_DIRECTORY = ""
 FILE_WITH_ITEMS = "words_input.txt"  # file with searched words are in the current WORK_DIRECTORY
 LOG_FILE = os.path.join(WORK_DIRECTORY, "log.txt")
 FILE_TYPES = [".html", ".htm"]
