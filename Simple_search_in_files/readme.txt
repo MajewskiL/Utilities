@@ -1,0 +1,1 @@
+Simple searching in "htm", "html" files for txt content with loging to file.
