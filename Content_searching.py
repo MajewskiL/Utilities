@@ -28,7 +28,7 @@ def search_dir(up_list: list, current_dir: str):
                     # add item if is in content and not in dict yet
                     if item_to_find.lower() in content and item_to_add not in ITEMS_DICT[item_to_find]:
                         ITEMS_DICT[item_to_find].append(item_to_add)
-        elif os.path.isdir(check_path):  # it file type is dir call yourself
+        elif os.path.isdir(check_path):  # if file type is dir call yourself
             new_path = os.path.join(current_dir, item)
             search_dir(os.listdir(new_path), new_path)
     return
